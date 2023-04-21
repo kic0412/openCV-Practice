@@ -1,0 +1,40 @@
+import cv2
+import numpy as np
+
+# 카메라 장치 연결
+cap = cv2.VideoCapture(0)   
+while cap.isOpened():
+
+    ret, frame = cap.read()
+    if not ret:
+        break
+    if cv2.waitKey(1) == 27: # esc키로 종료
+        break
+        
+    img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    """  여러줄 주석입니다.  위의 값 중  COLOR_BGR2GRAY 기본값을 아래 값으로 변경해서 확인합니다.
+                              특히 변경이라고 된 값은 반드시 변경해 보도록 합니다.
+                              COLOR_BGR2GRAY 기본값
+COLOR_BGR2BG
+COLOR_BGR2GB
+COLOR_BGR2RG
+COLOR_BGR2BGR 
+COLOR_BGR2HSV  변경
+COLOR_BGR2Lab 
+COLOR_BGR2Luv
+COLOR_BGR2YCrCb 변경
+COLOR_BGR2HLS 
+COLOR_BGR2RGBA 
+COLOR_BGR2RGBA 변경
+COLOR_BGR2RGB
+COLOR_BGR2XYZ
+COLOR_BGR2BGR565 변경
+                              
+                              
+                              
+                              """
+    output = cv2.Canny(img_gray, 100, 200)
+    cv2.imshow('Camera', output)
+    
+cap.release()
+cv2.destroyAllWindows()

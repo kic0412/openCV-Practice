@@ -1,0 +1,34 @@
+import cv2
+import numpy as np 
+from datetime import datetime
+
+src = cv2.imread("images/aventa.png")
+src_mask = np.zeros(src.shape, src.dtype)
+poly = np.array([ [800,800], [800,0], [0,0], [0,0], [0,0], [-20,75] ], np.int32)
+#대괄호 값을 바꿔 사진의 좌표를 설정해줌
+cv2.fillPoly(src_mask, [poly], (255, 255, 255))
+center = (200,150)
+
+cap = cv2.VideoCapture(0)
+
+if cap.isOpened():
+    print(cap.get(cv2.CAP_PROP_FPS))
+    delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
+    while True:
+        ret, img = cap.read()
+        if ret:
+            output = cv2.seamlessClone(src, img, src_mask, center, cv2.NORMAL_CLONE)
+            cv2.imshow("Movie", output)
+            if cv2.waitKey(delay) & 0xFF == 27:
+                print("ESC Key pressed")
+                break
+        else:
+            print("No Frame")
+            print(ret, img)
+            break
+            
+else:
+    print("File not opened")
+    
+cap.release()
+cv2.destroyAllWindows()
